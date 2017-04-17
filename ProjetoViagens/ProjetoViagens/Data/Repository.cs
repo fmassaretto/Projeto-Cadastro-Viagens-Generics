@@ -42,23 +42,23 @@ namespace ProjetoViagens.Data
             return entidade;
         }
 
-        //public override void Excluir(int id, string procedure)
-        //{
-        //    SqlCommand comando = GetSqlCommand(procedure);
+        public void Excluir(int id, string procedure)
+        {
+            SqlCommand comando = GetSqlCommand(procedure);
 
-        //    comando.Parameters.AddWithValue("@Id", id);
+            comando.Parameters.AddWithValue("@Id", id);
 
-        //    SqlDataReader reader = comando.ExecuteReader();
+            SqlDataReader reader = comando.ExecuteReader();
 
-        //    while (reader.Read())
-        //    {
-        //        Console.WriteLine("");
-        //        Console.WriteLine("********************************");
-        //        Console.WriteLine(reader["msgSucesso"]);
-        //        Console.WriteLine("********************************");
-        //        Console.WriteLine("");
-        //    }
-        //}
+            while (reader.Read())
+            {
+                Console.WriteLine("");
+                Console.WriteLine("********************************");
+                Console.WriteLine(reader["msgSucesso"]);
+                Console.WriteLine("********************************");
+                Console.WriteLine("");
+            }
+        }
 
         public T Incluir(T entidade, string procedure)
         {
@@ -94,14 +94,13 @@ namespace ProjetoViagens.Data
             return entidade;
         }
 
-        public List<T> Listar( string procedure)
+        public List<T> Listar(string procedure)
         {
             List<T> lista = new List<T>();
 
             SqlCommand comando = GetSqlCommand(procedure);
 
             SqlDataReader reader = comando.ExecuteReader();
-
             
             while (reader.Read())
             {
@@ -116,31 +115,34 @@ namespace ProjetoViagens.Data
                 }
                 lista.Add(Objeto);
             }
-
-
-
             return lista;
         }
 
-        //public override <T> Obter(string nome, string procedure)
-        //{
-        //    SqlCommand comando = GetSqlCommand(procedure);
+        public List<T> Obter(int id, string procedure)
+        {
+            SqlCommand comando = GetSqlCommand(procedure);
 
-        //    comando.Parameters.AddWithValue("@Nome", nome);
+            comando.Parameters.AddWithValue("@Id", id);
 
-        //    SqlDataReader reader = comando.ExecuteReader();
+            List<T> lista = new List<T>();
 
-        //    T planeta = new T();
-        //    while (reader.Read())
-        //    {
-        //        planeta.Id = reader.GetInt32(0);
-        //        planeta.Nome = reader.GetString(1);
-        //        planeta.Descricao = reader.GetString(2);
-        //        planeta.PossuiOxigenio = reader.GetBoolean(3);
-        //    }
+            SqlDataReader reader = comando.ExecuteReader();
 
-        //    return planeta;
-        //}
+            while (reader.Read())
+            {
+                var Objeto = Activator.CreateInstance<T>();
+                foreach (var propriedade in typeof(T).GetProperties())
+                {
+                    if (propriedade.Name != null)
+                    {
+                        propriedade.SetValue(Objeto, reader[propriedade.Name]);
+                        //Console.WriteLine(propriedade);
+                    }
+                }
+                lista.Add(Objeto);
+            }
+            return lista;
+        }
 
     }
 }

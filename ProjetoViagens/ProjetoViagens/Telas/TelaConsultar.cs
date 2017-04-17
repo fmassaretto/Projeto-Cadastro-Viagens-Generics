@@ -14,7 +14,7 @@ namespace ProjetoViagens.Telas
         public static void ShowTelaConsultar(string nomeEntidade)
         {
             Repository<Planetas> repoPlaneta = new Repository<Planetas>();
-            ClienteRepository repoCliente = new ClienteRepository();
+            Repository<Clientes> repoCliente = new Repository<Clientes>();
             TransporteRepository repoTransporte = new TransporteRepository();
             ViagemDiponivelRepository repoViagem = new ViagemDiponivelRepository();
 
@@ -25,36 +25,14 @@ namespace ProjetoViagens.Telas
                 {
                     // CONSULTA TODOS PLANETAS
                     List<Planetas> listaPlanetas = repoPlaneta.Listar("planetasTodos_sps");
-                    foreach (var item in listaPlanetas)
-                    {
-                        Console.WriteLine("");
-                        Console.WriteLine("ID: {0} - Planeta: {1}", item.Id, item.Nome);
-                        Console.WriteLine("Descrição: {0}", item.Descricao);
-                        Console.WriteLine("Possui Oxiênio? {0}", item.PossuiOxigenio == true ? "Sim" : "Não");
-                        Console.WriteLine("*********************************************************************");
-                    }
-
-                    //foreach (var item in repoPlaneta.Listar("planetasTodos_sps"))
-                    //{
-                    //    Console.WriteLine("");
-                    //    Console.WriteLine("ID: {0} - Planeta: {1}", item.Id, item.Nome);
-                    //    Console.WriteLine("Descrição: {0}", item.Descricao);
-                    //    Console.WriteLine("Possui Oxiênio? {0}", item.PossuiOxigenio == true ? "Sim" : "Não");
-                    //    Console.WriteLine("*********************************************************************");
-                    //}
+                    MostarConsultaPlaneta(listaPlanetas);
                 }
                 else if (nomeEntidade.ToLower() == "cliente")
                 {
                     // CONSULTA TODOS CLIENTES
-                    
-                    foreach (var item in repoCliente.Listar("clientesTodos_sps"))
-                    {
-                        Console.WriteLine("");
-                        Console.WriteLine("ID: {0} - Cliente: {1} | Especie: {2} | Documento: {3}", item.Id, item.Nome, item.Especie, item.Documento);
-                        Console.WriteLine("Cor: {0} | {1} Braço(s) | {2} Perna(s) | {3} Cabeça(s)", item.Cor, item.QtdBracos, item.QtdPernas, item.QtdCabecas);
-                        Console.WriteLine("Respira? {0}", item.Respira == true ? "Sim" : "Não");
-                        Console.WriteLine("*********************************************************************");
-                    }
+
+                    List<Clientes> listaClientes = repoCliente.Listar("clientesTodos_sps");
+                    MostrarConsultCliente(listaClientes);
                 }
                 else if (nomeEntidade.ToLower() == "transporte")
                 {
@@ -86,31 +64,22 @@ namespace ProjetoViagens.Telas
 
                 if (nomeEntidade.ToLower() == "planeta")
                 {
-                    // CONSULTA PLANETA POR NOME
-                    Console.WriteLine("Qual o nome do(a) {0}?", nomeEntidade);
-                    string nome = Console.ReadLine();
+                    // CONSULTA PLANETA POR ID
+                    Console.WriteLine("Qual o ID do(a) {0}?", nomeEntidade);
+                    int id = Convert.ToInt32(Console.ReadLine());
 
-                    //Planetas planeta = repoPlaneta.Obter(nome, "planetasPorNome_sps");
+                    List<Planetas> listaPlanetas = repoPlaneta.Obter(id, "planetasPorId_sps");
+                    MostarConsultaPlaneta(listaPlanetas);
 
-                    //Console.WriteLine("");
-                    //Console.WriteLine("ID: {0} - Planeta: {1}", planeta.Id, planeta.Nome);
-                    //Console.WriteLine("Descrição: {0}", planeta.Descricao);
-                    //Console.WriteLine("Possui Oxiênio? {0}", planeta.PossuiOxigenio == true ? "Sim" : "Não");
-                    //Console.WriteLine("*********************************************************************");
                 }
                 else if (nomeEntidade.ToLower() == "cliente")
                 {
-                    // CONSULTA CLIENTE POR NOME
-                    Console.WriteLine("Qual o nome do(a) {0}?", nomeEntidade);
-                    string nome = Console.ReadLine();
+                    // CONSULTA CLIENTE POR ID
+                    Console.WriteLine("Qual o ID do(a) {0}?", nomeEntidade);
+                    int id = Convert.ToInt32(Console.ReadLine());
 
-                    Clientes cliente = repoCliente.Obter(nome, "clientesPorNome_sps");
-
-                    Console.WriteLine("");
-                    Console.WriteLine("Cliente: {0} | Especie: {1} | Documento: {2}", cliente.Nome, cliente.Especie, cliente.Documento);
-                    Console.WriteLine("Cor: {0} | {1} Braço(s) | {2} Perna(s) | {3} Cabeça(s)", cliente.Cor, cliente.QtdBracos, cliente.QtdPernas, cliente.QtdCabecas);
-                    Console.WriteLine("Respira? {0}", cliente.Respira == true ? "Sim" : "Não");
-                    Console.WriteLine("*********************************************************************");
+                    List<Clientes> listaClientes = repoCliente.Obter(id, "clientesPorId_sps");
+                    MostrarConsultCliente(listaClientes);
                 }
                 else if (nomeEntidade.ToLower() == "transporte")
                 {
@@ -139,6 +108,30 @@ namespace ProjetoViagens.Telas
                         Console.WriteLine("*********************************************************************");
                     }
                 }
+            }
+        }
+
+        private static void MostrarConsultCliente(List<Clientes> listaClientes)
+        {
+            foreach (var item in listaClientes)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("ID: {0} - Cliente: {1} | Especie: {2} | Documento: {3}", item.Id, item.Nome, item.Especie, item.Documento);
+                Console.WriteLine("Cor: {0} | {1} Braço(s) | {2} Perna(s) | {3} Cabeça(s)", item.Cor, item.QtdBracos, item.QtdPernas, item.QtdCabeca);
+                Console.WriteLine("Respira? {0}", item.Respira == true ? "Sim" : "Não");
+                Console.WriteLine("*********************************************************************");
+            }
+        }
+
+        private static void MostarConsultaPlaneta(List<Planetas> listaPlanetas)
+        {
+            foreach (var item in listaPlanetas)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("ID: {0} - Planeta: {1}", item.Id, item.Nome);
+                Console.WriteLine("Descrição: {0}", item.Descricao);
+                Console.WriteLine("Possui Oxiênio? {0}", item.PossuiOxigenio == true ? "Sim" : "Não");
+                Console.WriteLine("*********************************************************************");
             }
         }
     }

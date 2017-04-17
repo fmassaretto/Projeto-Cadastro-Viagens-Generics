@@ -17,6 +17,10 @@ namespace ProjetoViagens
     {
         static void Main(string[] args)
         {
+            /*
+             * Obs.: Os CRUD das entidades Planetas e Clientes estão sendo feitas pela classe
+             * generica Repositorio.
+             */
             string opcaoMenuPrincipal = "";
 
             do
@@ -221,7 +225,7 @@ namespace ProjetoViagens
         #region ConsultaTickets
         private static void ConsultaTickets()
         {
-            ClienteRepository repoCliente = new ClienteRepository();
+            Repository<Clientes> repoCliente = new Repository<Clientes>();
             Clientes cliente = new Clientes();
 
             Console.WriteLine("*****************************CONSULTA VIAGEM********************************************");
@@ -229,7 +233,7 @@ namespace ProjetoViagens
             {
                 Console.WriteLine("");
                 Console.WriteLine("ID: {0} - Cliente: {1} | Especie: {2} | Documento: {3}", item.Id, item.Nome, item.Especie, item.Documento);
-                Console.WriteLine("Cor: {0} | {1} Braço(s) | {2} Perna(s) | {3} Cabeça(s)", item.Cor, item.QtdBracos, item.QtdPernas, item.QtdCabecas);
+                Console.WriteLine("Cor: {0} | {1} Braço(s) | {2} Perna(s) | {3} Cabeça(s)", item.Cor, item.QtdBracos, item.QtdPernas, item.QtdCabeca);
                 Console.WriteLine("Respira? {0}", item.Respira == true ? "Sim" : "Não");
                 Console.WriteLine("*********************************************************************");
             }
@@ -237,7 +241,13 @@ namespace ProjetoViagens
             Console.WriteLine("Qual o Id do cliente que deseja consultar?");
             int id = Convert.ToInt32(Console.ReadLine());
 
-            cliente = repoCliente.ObterPorId(id, "clientesPorId_sps");
+            List<Clientes> listaCliente = repoCliente.Obter(id, "clientesPorId_sps");
+
+            foreach (var item in listaCliente)
+            {
+                cliente.Id = item.Id;
+                cliente.Nome = item.Nome;
+            }
 
             if (cliente.Id > 0)
             {
@@ -286,32 +296,7 @@ namespace ProjetoViagens
                 Console.WriteLine("Não foi encontrado nenhuma pasta para o cliente!");
             }
         } 
-        #endregion
-
-        #region CadastarPlaneta
-        private static void CadastarPlaneta()
-        {
-            PlanetaRepository repoPlaneta = new PlanetaRepository();
-
-            Console.WriteLine("Menu 1-1 - Cadastrar Planeta");
-            Console.WriteLine("******************");
-            Console.WriteLine("");
-
-            Planetas planeta = PerguntasPadraoPlaneta();
-           
-            try
-            {
-                repoPlaneta.Incluir(planeta, "planetas_spi");
-            }
-            catch (Exception ex)
-            {
-                LogErro.ExecuteLogErro("Erro ao cadastrar planeta: " + planeta.Nome +
-                    " Descrição: " + planeta.Descricao + " Possui oxigênio: " + planeta.PossuiOxigenio.ToString() +
-                    ". StackTrace: " + ex.StackTrace + " Mensagem de erro: " + ex.Message);
-                Console.WriteLine("Erro ao cadastrar planeta, consulte o log de erro para mais detalhes.");
-            }
-        }
-        #endregion
+        #endregion     
 
         #region CadastarPlaneta2
         private static void CadastarPlaneta2()
@@ -341,7 +326,7 @@ namespace ProjetoViagens
         #region CadastrarCliente
         private static void CadastrarCliente()
         {
-            ClienteRepository repoCliente = new ClienteRepository();
+            Repository<Clientes> repoCliente = new Repository<Clientes>();
 
             Console.WriteLine("Menu 1-2 - Cadastrar Cliente");
             Console.WriteLine("******************");
@@ -475,13 +460,21 @@ namespace ProjetoViagens
             string encerrar = "";
             do
             {
-                ClienteRepository repoCliente = new ClienteRepository();
+                Repository<Clientes> repoCliente = new Repository<Clientes>();
 
                 Console.WriteLine("");
-                Console.WriteLine("Informe o nome do Cliente para atualizar:");
-                string nome = Console.ReadLine();
+                Console.WriteLine("Informe o ID do Cliente para atualizar:");
+                int id = Convert.ToInt32(Console.ReadLine());
 
-                MostrarConsulta.MostraConsultaClientePorNome(nome);
+                List<Clientes> listaClientes = repoCliente.Obter(id, "clientesPorId_sps");
+                foreach (var item in listaClientes)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("ID: {0} - Cliente: {1} | Especie: {2} | Documento: {3}", item.Id, item.Nome, item.Especie, item.Documento);
+                    Console.WriteLine("Cor: {0} | {1} Braço(s) | {2} Perna(s) | {3} Cabeça(s)", item.Cor, item.QtdBracos, item.QtdPernas, item.QtdCabeca);
+                    Console.WriteLine("Respira? {0}", item.Respira == true ? "Sim" : "Não");
+                    Console.WriteLine("*********************************************************************");
+                }
 
                 Console.WriteLine("Tem certeza que deseja atualizar? (s/n)");
                 string opcaoCerteza = Console.ReadLine();
@@ -622,7 +615,7 @@ namespace ProjetoViagens
 
             if (opcaoCerteza.Equals("s"))
             {
-                PlanetaRepository repoPlaneta = new PlanetaRepository();
+                Repository<Planetas> repoPlaneta = new Repository<Planetas>();
                 
                 try
                 {
@@ -654,7 +647,7 @@ namespace ProjetoViagens
 
             if (opcaoCerteza.Equals("s"))
             {
-                ClienteRepository repoCliente = new ClienteRepository();
+                Repository<Clientes> repoCliente = new Repository<Clientes>();
                 
                 try
                 {
@@ -809,7 +802,7 @@ namespace ProjetoViagens
             cliente.QtdPernas = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Quantas cabeças tem o Cliente?");
-            cliente.QtdCabecas = Convert.ToInt32(Console.ReadLine());
+            cliente.QtdCabeca = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Respira? (s|n)");
             string respira = Console.ReadLine();

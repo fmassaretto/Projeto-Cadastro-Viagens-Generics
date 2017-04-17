@@ -38,35 +38,6 @@ namespace ProjetoViagens.Telas
         }
         #endregion
 
-        #region MostraConsultaClientePorNome
-
-        public static void MostraConsultaClientePorNome(string nome)
-        {
-            ClienteRepository repoCliente = new ClienteRepository();
-            Clientes cliente = repoCliente.Obter(nome, "clientesPorNome_sps");
-
-            Console.WriteLine("");
-            Console.WriteLine("Cliente: {0} | Especie: {1} | Documento: {2}", cliente.Nome, cliente.Especie, cliente.Documento);
-            Console.WriteLine("Cor: {0} | {1} Braço(s) | {2} Perna(s) | {3} Cabeça(s)", cliente.Cor, cliente.QtdBracos, cliente.QtdPernas, cliente.QtdCabecas);
-            Console.WriteLine("Respira? {0}", cliente.Respira == true ? "Sim" : "Não");
-            Console.WriteLine("*********************************************************************");
-        }
-        #endregion
-
-        #region MostraConsultaPlanetaPorNome
-        public static void MostraConsultaPlanetaPorNome(string nome)
-        {
-            PlanetaRepository repoPlaneta = new PlanetaRepository();
-            Planetas planeta = repoPlaneta.Obter(nome, "planetasPorNome_sps");
-
-            Console.WriteLine("");
-            Console.WriteLine("ID: {0} - Planeta: {1}", planeta.Id, planeta.Nome);
-            Console.WriteLine("Descrição: {0}", planeta.Descricao);
-            Console.WriteLine("Possui Oxiênio? {0}", planeta.PossuiOxigenio == true ? "Sim" : "Não");
-            Console.WriteLine("*********************************************************************");
-        }
-        #endregion
-
         #region ConsultaBookingTodos
         public static void ConsultaBookingTodos()
         {

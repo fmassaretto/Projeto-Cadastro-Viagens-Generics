@@ -19,7 +19,7 @@ namespace ProjetoViagens.Model
 
         public int QtdPernas { get; set; }
 
-        public int QtdCabecas { get; set; }
+        public int QtdCabeca { get; set; }
 
         public bool Respira { get; set; }
 
@@ -32,7 +32,7 @@ namespace ProjetoViagens.Model
             this.Cor = cor;
             this.QtdBracos = qtdBracos;
             this.QtdPernas = qtdPernas;
-            this.QtdCabecas = qtdCabecas;
+            this.QtdCabeca = qtdCabecas;
             this.Respira = respira;
         }
         public Clientes()

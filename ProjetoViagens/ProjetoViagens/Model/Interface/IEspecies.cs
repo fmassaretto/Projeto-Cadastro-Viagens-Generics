@@ -14,7 +14,7 @@ namespace ProjetoViagens.Model.Interface
         string Cor { get; set; }
         int QtdBracos { get; set; }
         int QtdPernas { get; set; }
-        int QtdCabecas { get; set; }
+        int QtdCabeca { get; set; }
         bool Respira { get; set; }
     }
 }
