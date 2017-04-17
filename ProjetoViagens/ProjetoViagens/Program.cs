@@ -1,5 +1,4 @@
 ﻿using ProjetoViagens.Data;
-using ProjetoViagens.DB.Base;
 using ProjetoViagens.Logs;
 using ProjetoViagens.Menus;
 using ProjetoViagens.Model;
@@ -18,8 +17,9 @@ namespace ProjetoViagens
         static void Main(string[] args)
         {
             /*
-             * Obs.: Os CRUD das entidades Planetas e Clientes estão sendo feitas pela classe
-             * generica Repositorio.
+             * Obs.: Os CRUDs das entidades Planetas e Clientes estão sendo feitas pela classe
+             * generica Repositorio. OS CRUDs das outras entidades estão sendo feitas pelas suas
+             * respectivas classes repositorios.
              */
             string opcaoMenuPrincipal = "";
 
@@ -744,7 +744,6 @@ namespace ProjetoViagens
                 Console.WriteLine("#################################### VIAGENS DISPONÍVEIS ###################################");
                 Console.WriteLine("############################################################################################");
                 MostrarConsulta.MostraTodasViagensDisponiveis();
-                //MostraTodasViagensDisponiveis();
                 Console.WriteLine("############################################################################################");
                 Console.WriteLine("");
 
@@ -754,7 +753,6 @@ namespace ProjetoViagens
                 Console.WriteLine("################################## TRANSPORTES DISPONÍVEIS #################################");
                 Console.WriteLine("############################################################################################");
                 MostrarConsulta.MostraTodosTransportes();
-                //MostraTodosTransportes();
                 Console.WriteLine("############################################################################################");
                 Console.WriteLine("");
 
@@ -771,10 +769,7 @@ namespace ProjetoViagens
                 LogErro.ExecuteLogErro("Erro ao fazer o booking do cliente ID: "+ viagemCliente.IdCliente.ToString() + 
                     ". StackTrace: "+ ex.StackTrace + " Mensagem de erro: " + ex.Message);
                 Console.WriteLine("Erro ao ler arquivo, consulte o log de erro para mais detalhes.");
-            }
-            
-
-            
+            }          
         }
         #endregion
 
